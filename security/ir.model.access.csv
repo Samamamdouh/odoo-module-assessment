@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_training_training,training.training,model_training_training,manager_group,1,1,1,1
+access_training_task,training.task,model_training_task,manager_group,1,1,1,1
+
+access_training_training_employee,training.training,model_training_training,employee_group,1,1,1,0
+access_training_task_employee,training.task,model_training_task,employee_group,1,1,1,0

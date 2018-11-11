@@ -1,0 +1,80 @@
+<odoo>
+  <data>
+      <record model="ir.ui.view" id="view_course_kanban">
+            <field name="name">course.kanban</field>
+            <field name="model">training.training</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div
+                                    t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                                  oe_kanban_global_click_edit oe_semantic_html_override
+                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                                <div class="oe_dropdown_kanban">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg"/>
+                                        <ul class="oe_dropdown_menu">
+                                            <li>
+                                                <a type="delete">Delete</a>
+                                            </li>
+                                            <li>
+                                                <ul class="oe_kanban_colorpicker"
+                                                    data-field="color"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="oe_clear"></div>
+                                </div>
+                                <div t-attf-class="oe_kanban_content">
+                                    <!-- title -->
+                                    course name:
+                                    <strong><field name="name"/></strong>
+                                    <br/>
+                                    employee:
+                                    <strong><field name="employee_id"/></strong>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+      <record id="course_form_view" model="ir.ui.view">
+          <field name="name">course_form</field>
+          <field name="model">training.training</field>
+          <field name="arch" type="xml">
+              <form string="">
+                  <sheet>
+                      <group>
+                          <field name="name"/>
+                          <field name="employee_id"/>
+                          <field name="task_ids"/>
+                      </group>
+                  </sheet>
+              </form>
+          </field>
+      </record>
+    <record id="courses_menu_action" model="ir.actions.act_window">
+        <field name="name">courses menu</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">training.training</field>
+        <field name="view_mode">kanban,tree,form,</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Create New Course
+          </p>
+        </field>
+    </record>
+    <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+    <menuitem id="training_menu_root" name="training" sequence=""/>
+    <!-- This Menu Item Must have a parent -->
+    <menuitem id="training_menu_categ" name="training" parent="training_menu_root" />
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="courses_menu" name="Courses" parent="training_menu_categ" action="courses_menu_action" />
+  </data>
+</odoo>

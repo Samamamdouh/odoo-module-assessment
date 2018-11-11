@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+         <record id="category_security" model="ir.module.category">
+            <field name="name">Categ</field>
+            <field name="sequence" eval="1"/>
+        </record>
+
+        <record id="manager_group" model="res.groups">
+            <field name="name">manager group</field>
+            <field name="category_id" ref="category_security"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="employee_group" model="res.groups">
+            <field name="name">employee group</field>
+            <field name="category_id" ref="category_security"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="course_security" model="ir.rule">
+            <field name="name">employee_course</field>
+            <field ref="model_training_training" name="model_id"/>
+            <field name="domain_force">[('employee_id', '=',user.id)]</field>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <!-- You can attach this rule to a specific group, Or make it Global -->
+            <field name="groups" eval="[(4, ref('employee_group'))]"/>
+            <!--<field name="global" eval="1"/> -->
+        </record>
+
+        <record id="task_security" model="ir.rule">
+            <field name="name">employee_task</field>
+            <field ref="model_training_task" name="model_id"/>
+            <field name="domain_force">[('training_id.employee_id', '=',user.id)]</field>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+            <!-- You can attach this rule to a specific group, Or make it Global -->
+            <field name="groups" eval="[(4, ref('employee_group'))]"/>
+            <!--<field name="global" eval="1"/> -->
+        </record>
+    </data>
+</odoo>

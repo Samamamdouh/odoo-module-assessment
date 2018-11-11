@@ -1,0 +1,96 @@
+<odoo>
+    <data>
+        <record id="task_search" model="ir.ui.view">
+           <field name="name">task.search</field>
+           <field name="model">training.task</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <group string="Group By">
+                        <filter name="course" string="Course"
+                                context="{'group_by': 'training_id'}"/>
+                    </group>
+
+                </search>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_task_kanban">
+            <field name="name">task.kanban</field>
+            <field name="model">training.task</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state">
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div
+                                    t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                                  oe_kanban_global_click_edit oe_semantic_html_override
+                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                                <div class="oe_dropdown_kanban">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg"/>
+                                        <ul class="oe_dropdown_menu">
+                                            <li>
+                                                <a type="delete">Delete</a>
+                                            </li>
+                                            <li>
+                                                <ul class="oe_kanban_colorpicker"
+                                                    data-field="color"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="oe_clear"></div>
+                                </div>
+                                <div t-attf-class="oe_kanban_content">
+                                    <!-- title -->
+                                    Task name:
+                                    <strong><field name="name"/></strong>
+                                    <br/>
+                                    Course name:
+                                    <field name="training_id"/>
+                                    <br/>
+                                    Duration:
+                                    <field name="duration"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="task_form_view" model="ir.ui.view">
+        <field name="name">task form</field>
+        <field name="model">training.task</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <field name="state" widget="statusbar" clickable="True"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="training_id"/>
+                        <field name="duration"/>
+                        <field name="parent_id"/>
+                        <field name="approved" groups="training.manager_group"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+        <record id="action_view_task" model="ir.actions.act_window">
+            <field name="name">Tasks</field>
+            <field name="res_model">training.task</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="help" type="html">
+                <p>
+                </p>
+            </field>
+        </record>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="tasks_kanban_view" name="Tasks" parent="training_menu_categ" action="action_view_task" sequence=""/>
+
+    </data>
+</odoo>
